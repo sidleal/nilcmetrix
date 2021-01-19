@@ -1,7 +1,9 @@
-text_metrics
+NILCMetrix
 ============
-Repositório para extração de métricas sobre textos em português.
+NILCMetrix agrupa as métricas desenvolvidas em mais de uma década no NILC, iniciadas com o Coh-Metrix-Port (uma adaptação da ferramenta Coh-Metrix para o Português Brasileiro). O foco principal das métricas é calcular coesão, coerência e complexidade dos textos.
+Essa versão disponibiliza 200 métricas, detalhadas em [http://fw.nilc.icmc.usp.br:23380/metrixdoc](http://fw.nilc.icmc.usp.br:23380/metrixdoc).
 
+Esse projeto é um fork de: [https://github.com/nilc-nlp/coh-metrix-port](https://github.com/nilc-nlp/coh-metrix-port)
 
 Dependências
 ------------
@@ -16,6 +18,19 @@ Instale a base de dados do *Coh-Metrix-Dementia*, disponível na raiz desse proj
 Instale os pacotes do python, opcionalmente em um [virtualenv](https://virtualenv.pypa.io/en/stable/):
 
 	$ pip install -r text_metrics/requirements.txt
+
+Ou
+
+```
+$ pip3 install nltk
+$ pip3 install numpy
+$ pip3 install nlpnet
+$ pip3 install gensim
+$ pip3 install https://github.com/kpu/kenlm/archive/master.zip
+$ pip3 install lxml
+$ pip3 install psycopg2-binary
+$ cd tools/idd3/ && python3 setup.py install
+```
 
 
 Configuração inicial
