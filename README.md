@@ -19,6 +19,19 @@ Instale os pacotes do python, opcionalmente em um [virtualenv](https://virtualen
 
 	$ pip install -r text_metrics/requirements.txt
 
+Ou
+
+```
+$ pip3 install nltk
+$ pip3 install numpy
+$ pip3 install nlpnet
+$ pip3 install gensim
+$ pip3 install https://github.com/kpu/kenlm/archive/master.zip
+$ pip3 install lxml
+$ pip3 install psycopg2-binary
+$ cd tools/idd3/ && python3 setup.py install
+```
+
 
 Configuração inicial
 --------------------
