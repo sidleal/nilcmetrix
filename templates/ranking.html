@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>NILC - Simpligo</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/css/main.css?[[ .StaticHash ]]" />
+		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<canvas id="stage" width="500" height="100"></canvas>
+		<img src="static/img/nilc.png" alt="NILC" class="logotipo">
+
+		<section id="one" class="wrapper style2 special">
+			<div class="inner">
+				<header class="major">
+					<h2>Simpligo - Ranking</h2>
+				</header>
+				<div class="content">
+					<p>Sentence Complexity Assessment / Avaliador de complexidade de sentenças.</p>
+					<p>Simple 1 - 100 Complex / Simples 1 - 100 Complexo</p>
+				</div>
+				
+				[[if .ShowMessage]]
+				<section>
+					<div class="content">
+						<p><b>[[.Message]]</b></p>
+					</div>
+				</section>
+				[[end]]
+					
+				[[if .ShowResults]]
+				<section>
+					<div class="table-wrapper" id="results">
+						<h3>Results / Resultados</h3>
+						<table class="alt" id="table_results" name="table_results">
+							<thead>
+								<tr>
+									<th></th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								[[range .SimpligoRankingList]]
+								<tr style="color:[[.Color]];">
+									<td>[[.Index]]</td>
+									<td>[[.Sentence]]</td>
+									<td>[[.Value]]</td>
+								</tr>
+								[[end]]
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12">
+						<ul class="actions">
+							<li><input name="exportTSV" id="exportTSV" type="button" value="Export to TSV" class="primary" /></li>
+						</ul>
+					</div>
+				</section>
+				[[end]]
+
+				<section>
+					<h4>Enter your text in the following box (Max 1000 words at a time) / Entre com o texto na caixa abaixo (Máximo de 1000 palavras por vez).</h4>
+					<form method="post" action="/simpligo-ranking">
+						<div class="row gtr-uniform">
+							<div class="col-12">
+								<textarea name="text" id="text" placeholder="Enter your text here / Entre com o texto aqui" rows="12"></textarea>
+							</div>
+							<div class="col-12">
+								<ul class="actions">
+									<li><input type="submit" onclick="body.style = 'cursor: wait;';this.style = 'cursor: wait;';eval()" value="Send / Enviar" class="primary" /></li>
+									<li><input type="reset" value="Clear / Limpar" onclick="$('#text').val('');$('#text').focus();"/></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</section>
+
+			</div>
+
+		</section>
+
+
+	<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright"> &copy; 2017-2020 <a href="http://nilc.icmc.usp.br" target="_blank">NILC</a>. By <a href="https://github.com/sidleal" target="_blank">Sidney Leal</a>, advisored by <a href="http://lattes.cnpq.br/4793072701914550" target="_blank">Sandra Aluísio</a>.</p>
+		</footer>
+
+	<!-- Scripts -->
+		<script src="static/js/jquery.min.js"></script>
+		<script src="static/js/jquery.scrolly.min.js"></script>
+		<script src="static/js/browser.min.js"></script>
+		<script src="static/js/breakpoints.min.js"></script>
+		<script src="static/js/util.js"></script>
+		<script src="static/js/main.js?[[ .StaticHash ]]"></script>
+		<script src="static/js/TweenLite.min.js"></script>
+		<script src="static/js/easeljs-0.7.1.min.js"></script>
+		<script src="static/js/nilc1.js?[[ .StaticHash ]]"></script>
+
+		<script language="javascript">
+			$('#text').val('[[.Text]]');
+		</script>
+	</body>
+</html>

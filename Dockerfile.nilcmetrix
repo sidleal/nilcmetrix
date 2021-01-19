@@ -1,0 +1,5 @@
+FROM cohmetrix:focal
+
+EXPOSE 8080
+
+ENTRYPOINT /opt/text_metrics/nilcmetrix

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>NILCMetrix</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/css/main.css?[[ .StaticHash ]]" />
+		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<canvas id="stage" width="500" height="100"></canvas>
+		<img src="static/img/nilc.png" alt="NILC" class="logotipo">
+
+		<section id="one" class="wrapper style2 special">
+			<div class="inner">
+				<header class="major">
+					<h2>NILCMetrix</h2>
+				</header>
+				<div class="content">
+					<p>NILCMetrix agrupa as métricas desenvolvidas em mais de uma década no NILC, iniciadas com o Coh-Metrix-Port (uma adaptação da ferramenta Coh-Metrix para o Português Brasileiro). 
+						O foco principal das métricas é calcular coesão, coerência e dificuldade de compreensão dos textos. <br/> Essa versão disponibiliza 200 métricas, detalhadas <a href="/metrixdoc" target="_blank">aqui</a>.</p>
+				</div>
+				
+				[[if .ShowMessage]]
+				<section>
+					<div class="content">
+						<p><b>[[.Message]]</b></p>
+					</div>
+				</section>
+				[[end]]
+					
+				[[if .ShowResults]]
+				<section>
+					<div class="table-wrapper" id="results">
+						<h3>Resultados</h3>
+						<table class="alt" id="table_results" name="table_results">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Grupo</th>
+									<th>Métrica</th>
+									<th width="50%">Descrição</th>
+									<th>Valor</th>
+								</tr>
+							</thead>
+							<tbody>
+								[[range .MetricList]]
+								<tr>
+									<td>[[.Index]]</td>
+									<td>[[.Class]]</td>
+									<td><a href="/metrixdoc#[[.Metric]]" target="_blank">[[.Metric]]</a></td>
+									<td width="50%"><a href="/metrixdoc#[[.Metric]]" target="_blank">[[.Description]]</a></td>
+									<td>[[.Value]]</td>
+								</tr>
+								[[end]]
+							</tbody>
+						</table>
+					</div>
+					<div class="col-12">
+						<ul class="actions">
+							<li><input name="export" id="export" type="button" value="Exportar para CSV" class="primary" /></li>
+						</ul>
+					</div>
+				</section>
+				[[end]]
+
+				<section>
+					<h4>Entre com o texto na caixa abaixo (Máximo 2000 palavras por vez).</h4>
+					<form method="post" action="/nilcmetrix">
+						<div class="row gtr-uniform">
+							<div class="col-12">
+								<textarea name="text" id="text" placeholder="Entre com o texto aqui" rows="12"></textarea>
+							</div>
+							<div class="col-12">
+								<ul class="actions">
+									<li><input type="submit" onclick="body.style = 'cursor: wait;';this.style = 'cursor: wait;';eval()" value="Processar" class="primary" /></li>
+									<li><input type="reset" value="Limpar" onclick="$('#text').val('');$('#text').focus();"/></li>
+								</ul>
+							</div>
+						</div>
+					</form>
+				</section>
+
+			</div>
+
+		</section>
+
+
+	<!-- Footer -->
+		<footer id="footer">
+			<p class="copyright"> &copy; 2010-2021 <a href="http://nilc.icmc.usp.br" target="_blank">NILC</a>. Refatorado por <a href="https://github.com/sidleal" target="_blank">Sidney Leal</a> (com base nos códigos de <a href="https://github.com/carolscarton" target="_blank">Carolina Scarton</a>, <a href="https://github.com/andrecunha" target="_blank">Andre Cunha</a> e <a href="https://github.com/nathanshartmann" target="_blank">Nathan Hartmann</a>), apoiado por <a href="http://lattes.cnpq.br/6357197916145158" target="_blank">Magali Duran</a>. Todos sob a orientação da professora <a href="http://lattes.cnpq.br/4793072701914550" target="_blank">Sandra Aluísio</a>.</p>
+		</footer>
+
+	<!-- Scripts -->
+		<script src="static/js/jquery.min.js"></script>
+		<script src="static/js/jquery.scrolly.min.js"></script>
+		<script src="static/js/browser.min.js"></script>
+		<script src="static/js/breakpoints.min.js"></script>
+		<script src="static/js/util.js"></script>
+		<script src="static/js/main.js?[[ .StaticHash ]]"></script>
+		<script src="static/js/TweenLite.min.js"></script>
+		<script src="static/js/easeljs-0.7.1.min.js"></script>
+		<script src="static/js/nilc1.js?[[ .StaticHash ]]"></script>
+
+		<script language="javascript">
+			$('#text').val('[[.Text]]');
+		</script>
+	</body>
+</html>

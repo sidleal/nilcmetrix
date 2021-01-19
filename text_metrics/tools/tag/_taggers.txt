@@ -1,0 +1,27 @@
+Taggers to investigate
+======================
+
+HunPos
+------
+
+https://code.google.com/p/hunpos/
+
+Stanford PoS tagger
+-------------------
+
+http://nlp.stanford.edu/downloads/tagger.shtml
+
+MXPOST
+------
+
+http://www.inf.ed.ac.uk/resources/nlp/local_doc/MXPOST.html
+
+Apache OpenNLP
+--------------
+
+https://opennlp.apache.org/
+
+NLTK taggers
+------------
+
+http://www.nltk.org/api/nltk.tag.html
