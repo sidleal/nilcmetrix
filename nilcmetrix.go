@@ -307,9 +307,9 @@ func main() {
 func makeHTTPServer() *http.Server {
 	mux := Router()
 	return &http.Server{
-		ReadTimeout:  300 * time.Second,
-		WriteTimeout: 300 * time.Second,
-		IdleTimeout:  360 * time.Second,
+		ReadTimeout:  15 * time.Minute,
+		WriteTimeout: 15 * time.Minute,
+		IdleTimeout:  15 * time.Minute,
 		Handler:      mux,
 	}
 }
@@ -332,7 +332,7 @@ func cohMetrixPortHandler(w http.ResponseWriter, r *http.Request) {
 	if text != "" {
 
 		nWords := strings.Count(text, " ") + 1
-		if nWords > 2000 {
+		if nWords > 4000 {
 			ret := "Text is too big."
 			log.Println(ret)
 			pInfo.Message = ret
@@ -375,7 +375,7 @@ func nilcMetrixHandler(w http.ResponseWriter, r *http.Request) {
 	if text != "" {
 
 		nWords := strings.Count(text, " ") + 1
-		if nWords > 2000 {
+		if nWords > 4000 {
 			ret := "Text is too big."
 			log.Println(ret)
 			pInfo.Message = ret
@@ -459,7 +459,7 @@ func metricsHandler(w http.ResponseWriter, r *http.Request) {
 	ret += "-------------------------------" + "\n"
 
 	nWords := strings.Count(text, " ") + 1
-	if nWords > 2000 {
+	if nWords > 4000 {
 		ret = "Text is too big."
 		log.Println(ret)
 		w.WriteHeader(http.StatusInternalServerError)
