@@ -170,8 +170,11 @@ class WordsBeforeMainVerb(base.Metric):
         for tree, tagged_sent in zip(trees, words):
             i_main_verb = 0
 
-            i_root = [node['rel']
-                      for node in tree.nodes.values()].index('ROOT')
+            node_list = [node['rel'] for node in tree.nodes.values()]
+            if 'ROOT' not in node_list:
+                continue
+
+            i_root = node_list.index('ROOT')
 
             if dep_tagset.is_verb(
                     ('', list(tree.nodes.values())[i_root]['tag'])):
