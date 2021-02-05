@@ -4932,7 +4932,7 @@ class ContentWordsAmbiguity(base.Metric):
 
 class AdjacentPersonalPronounAnaphoricReferences(AnaphoricReferencesBase):
     """
-        **Nome da Métrica**: coreference_pronoum_ratio
+        **Nome da Métrica**: coreference_pronoun_ratio
 
         **Interpretação**: quanto maior a métrica, maior a complexidade textual
 
@@ -4977,7 +4977,7 @@ class AdjacentPersonalPronounAnaphoricReferences(AnaphoricReferencesBase):
                  }
     name = '''Ratio of candidates of personal pronouns to anaphoric reference
             in adjacente sentences'''
-    column_name = 'coreference_pronoum_ratio'
+    column_name = 'coreference_pronoun_ratio'
 
     def __init__(self):
         super(AdjacentPersonalPronounAnaphoricReferences, self).__init__(nsentences=1)
