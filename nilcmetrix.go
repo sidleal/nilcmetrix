@@ -278,6 +278,7 @@ func Router() *mux.Router {
 	r.HandleFunc("/metrixdoc", metrixDocHandler)
 	r.HandleFunc("/cohmetrixport", cohMetrixPortHandler)
 	r.HandleFunc("/nilcmetrix", nilcMetrixHandler)
+	r.HandleFunc("/nilcmetrix-en", nilcMetrixEnHandler)
 	r.HandleFunc("/simpligo-ranking", simpligoRankingHandler)
 	r.HandleFunc("/api/v1/metrix/{subset}/{key}", metricsHandler).Methods("POST")
 	r.HandleFunc("/api/v1/palavras/{retType}/{key}", palavrasHandler)
@@ -365,6 +366,14 @@ func cohMetrixPortHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func nilcMetrixHandler(w http.ResponseWriter, r *http.Request) {
+	nilcMetrixCall(w, r, "")
+}
+
+func nilcMetrixEnHandler(w http.ResponseWriter, r *http.Request) {
+	nilcMetrixCall(w, r, "-en")
+}
+
+func nilcMetrixCall(w http.ResponseWriter, r *http.Request, lang string) {
 
 	pInfo := pageInfo
 	pInfo.ShowResults = false
@@ -402,7 +411,7 @@ func nilcMetrixHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	templateHandler(w, r, "nilcmetrix", pInfo)
+	templateHandler(w, r, "nilcmetrix"+lang, pInfo)
 }
 
 func templateHandler(w http.ResponseWriter, r *http.Request, pageName string, pInfo PageInfo) {
