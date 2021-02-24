@@ -1,7 +1,31 @@
-NILCMetrix
+NILC-Metrix
 ============
-NILCMetrix agrupa as métricas desenvolvidas em mais de uma década no NILC, iniciadas com o Coh-Metrix-Port (uma adaptação da ferramenta Coh-Metrix para o Português Brasileiro). O foco principal das métricas é calcular coesão, coerência e complexidade dos textos.
-Essa versão disponibiliza 200 métricas, detalhadas em [http://fw.nilc.icmc.usp.br:23380/metrixdoc](http://fw.nilc.icmc.usp.br:23380/metrixdoc).
+NILC-Metrix gathers the metrics developed over more than a decade in NILC (Interinstitutional Center for Computational Linguistics), starting with Coh-Metrix-Port, (an adaptation of Coh-Metrix to Portuguese). The main purpose of these metrics is to assess cohesion, coherence and text complexity level. The release of March, 2021 makes available 200 metrics, refactored by Sidney Leal (based on source codes from Carolina Scarton, Andre Cunha and Nathan Hartmann), supported by Magali Duran. All advised by Sandra Aluísio.
+
+License
+-------
+[AGPLv3](https://www.gnu.org/licenses/agpl-3.0.html)
+
+Citing this work:
+-----------------
+````
+@inproceedings{NILCMetrix2021,
+    author = {Sidney Evaldo Leal and ... and Sandra Maria Aluísio},
+    title = {Introducing NILC-Metrix: the largest set of metrics to process written and transcribed texts in Brazilian Portuguese},
+    booktitle = {LREV ...},
+    year = {2021},
+    pages = {0-0},
+    publisher = {...},
+}
+````
+
+Mais detalhes:
+--------------
+
+NILC-Metrix agrupa as métricas desenvolvidas em mais de uma década no NILC, iniciadas com o Coh-Metrix-Port (uma adaptação da ferramenta Coh-Metrix para o Português Brasileiro). O foco principal das métricas é calcular coesão, coerência e nível de complexidade textual.
+Essa versão disponibiliza 200 métricas, detalhadas em [http://fw.nilc.icmc.usp.br:23380/metrixdoc](http://fw.nilc.icmc.usp.br:23380/metrixdoc),
+refatoradas por Sidney Leal (com base nos códigos de Carolina Scarton, Andre Cunha e Nathan Hartmann), apoiado por Magali Duran. Todos sob a orientação da professora Sandra Aluísio.
+
 
 Esse projeto é um fork de: [https://github.com/nilc-nlp/coh-metrix-port](https://github.com/nilc-nlp/coh-metrix-port)
 
