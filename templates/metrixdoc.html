@@ -147,7 +147,7 @@
 					<br>
 					<b>Descrição da métrica</b>: a fórmula de leiturabilidade de Dalechall adaptada combina a quantidade de palavras não familiares com a quantidade média de palavras por sentença:
 					<br>
-					<br>(0.1579 * percentual de palavras não familiares) + (0.0496 * quantidade média de palavras por sentença) + 3.6365					
+					<br>(0.1579 * percentual de palavras não familiares) + (0.0496 * quantidade média de palavras por sentença) + 3.6365
 					<br>
 					<br>A métrica tem uma equivalência com os níveis escolares, conforme segue (Chall, Jeanne Sternlicht; Dale, Edgar (May 1, 1995). Readability revisited. ISBN 1571290087):<br>
 					<br>
@@ -160,7 +160,7 @@
 					10 ou mais => nível 16 ou acima (graduados)<br>
 					<br>
 					<b>Definição dos termos que aparecem na descrição da métrica</b>: "palavras não familiares" são aquelas que não constam do vocabulário básico conhecido por alunos do quarto ano. Para fins dessa métrica, foram utilizadas as entradas do Dicionário de Palavras Simples de Maria Tereza Biderman.<br>
-					<br>				
+					<br>
 					<b>Limitações da métrica</b>: não há<br>
 					<br>
 					<b>Teste</b>: Não podemos acrescentar nenhuma despesa a mais no nosso orçamento. Já não temos recursos suficientes para a manutenção das escolas, por exemplo, e também precisamos valorizar o magistério - justifica a diretora do Departamento Pedagógico da SEC, Sonia Balzano.<br>
@@ -1657,11 +1657,11 @@
 					<br>
 					<b>Interpretação</b>: quanto maior a métrica, maior a complexidade<br>
 					<br>
-					<b>Descrição da métrica</b>: Índice Gunning Fog de leiturabilidade<br>
+					<b>Descrição da métrica</b>: o índice de leiturabilidade Gunning Fog (também conhecido como Gunning FoX) soma a quantidade média de palavras por sentença ao percentual de palavras difíceis no texto e multiplica tudo por 4. O resultado está diretamente ligado aos 12 níveis do ensino americano. Índices superiores a 12 representam textos extremamente complexos.<br>
 					<br>
-					<b>Definição dos termos que aparecem na descrição da métrica</b>: <br>
+					<b>Definição dos termos que aparecem na descrição da métrica</b>: palavras difíceis, para essa métrica, são aquelas que possuem mais de duas sílabas.<br>
 					<br>
-					<b>Limitações da métrica</b>: <br>
+					<b>Limitações da métrica</b>: nem sempre as palavras com mais de duas sílabas são difíceis em português (ex: árvore, professor, escola, salada) <br>
 					<br>
 					<b>Teste</b>: Não podemos acrescentar nenhuma despesa a mais no nosso orçamento. Já não temos recursos suficientes para a manutenção das escolas, por exemplo, e também precisamos valorizar o magistério – justifica a diretora do Departamento Pedagógico da SEC, Sonia Balzano.<br>
 					<br>
@@ -1677,13 +1677,13 @@
 					<br>
 					<b>Nome da Métrica</b>: adjectives_min<br>
 					<br>
-					<b>Interpretação</b>: não está clara a relação da métrica com a complexidade textual<br>
+					<b>Interpretação</b>: a métrica permite conhecer a sentença que contém o menor número de adjetivos no texto. Se esse número for alto, já é um indício de que o texto é complexo sob esse critério.<br>
 					<br>
 					<b>Descrição da métrica</b>: Proporção mínima de adjetivos em relação à quantidade de palavras das sentenças<br>
 					<br>
 					<b>Definição dos termos que aparecem na descrição da métrica</b>: são considerados adjetivos as palavras anotadas com as etiquetas ADJ pelo POS tagger nlpnet.<br>
 					<br>
-					<b>Limitações da métrica</b>:  <br>
+					<b>Limitações da métrica</b>: depende do bom desempenho do tagger. <br>
 					<br>
 					<b>Teste</b>: Foi o senador Flávio Arns (PT-PR) quem sugeriu a inclusão da peça entre os itens do uniforme de alunos dos ensinos Fundamental e Médio nas escolas municipais, estaduais e federais. Ele defende a medida como forma de proteger crianças e adolescentes dos males provocados pelo excesso de exposição aos raios solares. Se a ideia for aprovada, os estudantes receberão dois conjuntos anuais, completados por calçado, meias, calça e camiseta.<br>
 					<br>
@@ -1721,7 +1721,7 @@
 					<br>
 					<b>Nome da Métrica</b>: adjectives_max<br>
 					<br>
-					<b>Interpretação</b>: não está clara a relação da métrica com a complexidade textual<br>
+					<b>Interpretação</b>: a métrica permite conhecer a sentença que contém o maior número de adjetivos no texto. Se esse número for baixo, já é um indício de que o texto é pouco complexo sob esse critério.<br>
 					<br>
 					<b>Descrição da métrica</b>: Proporção máxima de adjetivos em relação à quantidade de palavras das sentenças<br>
 					<br>
@@ -2111,7 +2111,7 @@
 					<br>
 					<b>Nome da Métrica</b>: personal_pronouns<br>
 					<br>
-					<b>Interpretação</b>: não está clara a relação da métrica com a complexidade textual<br>
+					<b>Interpretação</b>: pronomes exigem o esforço do leitor para descobrir a que nome eles estão se referindo.
 					<br>
 					<b>Descrição da métrica</b>: Proporção de pronomes pessoais em relação à quantidade de palavras do texto<br>
 					<br>
@@ -2153,7 +2153,7 @@
 					<br>
 					<b>Nome da Métrica</b>: pronouns_max<br>
 					<br>
-					<b>Interpretação</b>: não está clara a relação da métrica com a complexidade textual<br>
+					<b>Interpretação</b>: pronomes exigem o esforço do leitor para descobrir a que nome eles estão se referindo.<br>
 					<br>
 					<b>Descrição da métrica</b>: Proporção máxima de pronomes em relação à quantidade de palavras das sentenças<br>
 					<br>
@@ -2805,7 +2805,7 @@
 					<br>
 					<hr/>
 					<br>
-					<h3 id="tmp_pos_conn_ratio">Proporção de conectivos  temporais positivosem relação à quantidade de palavras do texto</h3>
+					<h3 id="tmp_pos_conn_ratio">Proporção de conectivos  temporais positivos em relação à quantidade de palavras do texto</h3>
 					<br>
 					<b>Nome da Métrica</b>: tmp_pos_conn_ratio<br>
 					<br>
@@ -3355,7 +3355,7 @@
 					<br>
 					<b>Nome da Métrica</b>: second_person_possessive_pronouns<br>
 					<br>
-					<b>Interpretação</b>: não está clara a relação da métrica com a complexidade textual, pois as segundas pessoas são pouco utilizadas no português brasileiro, já que as formas de segunda pessoa "você" e "vocês" flexionam o verbo na terceira pessoa.<br>
+					<b>Interpretação</b>: as segundas pessoas são pouco utilizadas no português brasileiro, já que as formas de segunda pessoa "você" e "vocês" flexionam o verbo na terceira pessoa e usam os pronomes possessivos de terceira pessoa também.<br>
 					<br>
 					<b>Descrição da métrica</b>: proporção de pronomes possessivos de segunda pessoa em relação à quantidade total de pronomes possessivos no texto<br>
 					<br>
@@ -3419,7 +3419,7 @@
 					<br>
 					<b>Definição dos termos que aparecem na descrição da métrica</b>: pronomes pessoais são: eu, tu, você, ele, ela, nós, vós, vocês, eles, elas. Pronomes pessoais de segunda pessoa são: tu e vós.<br>
 					<br>
-					<b>Limitações da métrica</b>:  <br>
+					<b>Limitações da métrica</b>: <br>
 					<br>
 					1) Para identificar a segunda pessoa, é preciso incluir os pronomes pessoais “você” e “vocês”, que usam a flexão verbal de terceira pessoa, mas são efetivamente segundas pessoas no discurso.<br>
 					<br>
@@ -3489,7 +3489,7 @@
 					<br>
 					<b>Definição dos termos que aparecem na descrição da métrica</b>: Palavras de conteúdo são palavras de classe aberta (substantivos, adjetivos, verbos e advérbios). Palavras funcionais são palavras das classes fechadas (numerais, artigos, pronomes, interjeições, preposições, conjunções)<br>
 					<br>
-					<b>Limitações da métrica</b>: 
+					<b>Limitações da métrica</b>:
 					1) a rigor, somente os advérbios terminados em –mente são palavras de conteúdo. Mas como as etiquetas não fazem essa diferença, estão sendo computados todos os advérbios. O resultado da métrica é dependente da forma de tokenização adotada (com ou sem descontração, com ou sem junção de partes de nomes próprios e multipalavras).<br>
 					<br>
 					2)a métrica faz a tokenização sem considerar descontrações. A descontração é importante para o cômputo de palavras funcionais. Se houver descontração, cada parte da contração é contada em uma categoria, porém, se não houver, uma das categorias gramaticais envolvidas ficará prejudicada.<br>
@@ -3580,7 +3580,7 @@
 					<br>
 					<b>Interpretação</b>: quanto maior o resultado da métrica, maior a complexidade textual.<br>
 					<br>
-					<b>Descrição da métrica</b>:O Índice de Leiturabilidade de Flesch busca uma correlação entre tamanhos médios de palavras e sentenças. 
+					<b>Descrição da métrica</b>:O Índice de Leiturabilidade de Flesch busca uma correlação entre tamanhos médios de palavras e sentenças.
 					<br>
 					<br>
 					<b>Fórmula</b>: 248,835 – [1,015 x (média de palavras por sentença)] – [84,6 x (média de sílabas por palavra)] <br>
@@ -3633,7 +3633,7 @@
 					<br>
 					<b>Definição dos termos que aparecem na descrição da métrica</b>: quantidade de sentidos é a soma de todos os sentidos de cada palavra no TEP Thesaurus Eletrônico do Português<br>
 					<br>
-					<b>Limitações da métrica</b>:   <br>
+					<b>Limitações da métrica</b>: não há.  <br>
 					<br>
 					<b>Teste</b>: O menino colou na prova, embora soubesse que poderia ser pego.<br>
 					<br>
