@@ -375,7 +375,7 @@ func nilcMetrixEnHandler(w http.ResponseWriter, r *http.Request) {
 	nilcMetrixCall(w, r, "-en")
 }
 
-const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify?secret=6LeON4MaAAAAABpSwH5aurAtmgBXO16udJtb2fJG&response="
+const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify?secret=xxxxxxxxxxxxxxxxxx&response="
 
 func validateGoogleRecaptcha(r *http.Request, data string) bool {
 	if data == "" {
@@ -412,17 +412,7 @@ func nilcMetrixCall(w http.ResponseWriter, r *http.Request, lang string) {
 
 	text := r.FormValue("text")
 
-	captchaData := r.FormValue("g-recaptcha-response")
-	isHuman := validateGoogleRecaptcha(r, captchaData)
-	if !isHuman {
-		ret := "Invalid Re-Captcha Validation."
-		log.Println(ret)
-		pInfo.Message = ret
-		pInfo.ShowMessage = true
-	}
-
-	if text != "" && isHuman {
-
+	if text != "" {
 		nWords := strings.Count(text, " ") + 1
 		if nWords > 4000 {
 			ret := "Text is too big."
@@ -432,23 +422,33 @@ func nilcMetrixCall(w http.ResponseWriter, r *http.Request, lang string) {
 
 		} else {
 
-			_, list, err := callMetrix("_all", text)
-			if err != nil {
-				log.Println(err)
-				w.WriteHeader(http.StatusInternalServerError)
-				fmt.Fprint(w, "Error "+err.Error())
-				return
+			captchaData := r.FormValue("g-recaptcha-response")
+			isHuman := validateGoogleRecaptcha(r, captchaData)
+			if !isHuman {
+				ret := "Invalid Re-Captcha Validation."
+				log.Println(ret)
+				pInfo.Message = ret
+				pInfo.ShowMessage = true
+			} else {
+
+				_, list, err := callMetrix("_all", text)
+				if err != nil {
+					log.Println(err)
+					w.WriteHeader(http.StatusInternalServerError)
+					fmt.Fprint(w, "Error "+err.Error())
+					return
+				}
+
+				sort.Sort(MetrixResultOrder(list))
+
+				for i, it := range list {
+					it.Index = i + 1
+					pInfo.MetricList = append(pInfo.MetricList, it)
+				}
+
+				pInfo.ShowResults = true
+				pInfo.Text = text
 			}
-
-			sort.Sort(MetrixResultOrder(list))
-
-			for i, it := range list {
-				it.Index = i + 1
-				pInfo.MetricList = append(pInfo.MetricList, it)
-			}
-
-			pInfo.ShowResults = true
-			pInfo.Text = text
 		}
 	}
 
