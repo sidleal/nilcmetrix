@@ -326,6 +326,8 @@ func cohMetrixPortHandler(w http.ResponseWriter, r *http.Request) {
 
 	pInfo := pageInfo
 	pInfo.ShowResults = false
+	pInfo.Message = ""
+	pInfo.ShowMessage = false
 
 	text := r.FormValue("text")
 
@@ -373,6 +375,36 @@ func nilcMetrixEnHandler(w http.ResponseWriter, r *http.Request) {
 	nilcMetrixCall(w, r, "-en")
 }
 
+const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify?secret=6LeON4MaAAAAABpSwH5aurAtmgBXO16udJtb2fJG&response="
+
+func validateGoogleRecaptcha(r *http.Request, data string) bool {
+	if data == "" {
+		log.Println("Error: empty recaptcha data")
+		return false
+	}
+
+	url := URL_RECAPTCHA + data + "&remoteip=" + r.RemoteAddr
+
+	log.Println("recaptcha", url)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println("Error: " + err.Error())
+		return false
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("Error reading response: " + err.Error())
+		return false
+	}
+
+	log.Println(string(body))
+
+	return resp.StatusCode == 200
+}
+
 func nilcMetrixCall(w http.ResponseWriter, r *http.Request, lang string) {
 
 	pInfo := pageInfo
@@ -380,7 +412,16 @@ func nilcMetrixCall(w http.ResponseWriter, r *http.Request, lang string) {
 
 	text := r.FormValue("text")
 
-	if text != "" {
+	captchaData := r.FormValue("g-recaptcha-response")
+	isHuman := validateGoogleRecaptcha(r, captchaData)
+	if !isHuman {
+		ret := "Invalid Re-Captcha Validation."
+		log.Println(ret)
+		pInfo.Message = ret
+		pInfo.ShowMessage = true
+	}
+
+	if text != "" && isHuman {
 
 		nWords := strings.Count(text, " ") + 1
 		if nWords > 4000 {
