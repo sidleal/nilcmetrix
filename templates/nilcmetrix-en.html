@@ -74,6 +74,7 @@
 								<textarea name="text" id="text" placeholder="Enter your text here" rows="12"></textarea>
 							</div>
 							<div class="col-12">
+								<div class="g-recaptcha" data-sitekey="6LeON4MaAAAAAJQ73u7TepaY_omDkT79sbcTKJJw"></div>
 								<ul class="actions">
 									<li><input type="submit" onclick="body.style = 'cursor: wait;';this.style = 'cursor: wait;';eval()" value="Submit" class="primary" /></li>
 									<li><input type="reset" value="Clear" onclick="$('#text').val('');$('#text').focus();"/></li>
@@ -94,6 +95,7 @@
 		</footer>
 
 	<!-- Scripts -->
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 		<script src="static/js/jquery.min.js"></script>
 		<script src="static/js/jquery.scrolly.min.js"></script>
 		<script src="static/js/browser.min.js"></script>
