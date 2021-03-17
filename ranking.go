@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sidleal/simpligo-pln/tools/senter"
+	"github.com/sidleal/simpligo-cloze/web/tools/senter"
 )
 
 type SimpligoRankingResultItem struct {
