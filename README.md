@@ -9,13 +9,14 @@ License
 Citing this work:
 -----------------
 ````
-@inproceedings{NILCMetrix2021,
-    author = {Sidney Evaldo Leal and ... and Sandra Maria Aluísio},
-    title = {Introducing NILC-Metrix: the largest set of metrics to process written and transcribed texts in Brazilian Portuguese},
-    booktitle = {LREV ...},
+@article{NILCMetrix2021,
+    author = {Sidney Evaldo Leal and Magali Sanchez Duran and Carolina Evaristo Scarton and Nathan Siegle Hartmann and Sandra Maria Aluísio},
+    title = {NILC-Metrix: assessing the complexity of written and spoken language in Brazilian Portuguese},
+    journal = {},
     year = {2021},
-    pages = {0-0},
-    publisher = {...},
+    pages = {},
+    volume = {},
+    number = {}
 }
 ````
 
