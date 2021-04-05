@@ -33,6 +33,8 @@ class CECISyllableSeparator(SyllableSeparator):
     def _get(self, la, le):
         try:
             letters = self.tab_ceci[0]
+            if la not in letters or le not in letters:
+                return " "
             line = letters.index(la)
             column = letters.index(le)
             return self.tab_ceci[line][column]

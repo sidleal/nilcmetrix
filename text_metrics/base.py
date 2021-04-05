@@ -89,13 +89,15 @@ class Text(object):
             with codecs.open(filepath, mode='r', encoding=encoding)\
                     as input_file:
                 content = input_file.read()
-        content_tokens = content.split()
-        if len(content_tokens) > 1000:
-            index = [content_tokens[1000:].index(token) for token in content_tokens[1000:] if token[-1] in ['.', '!', '?']]
-            if index:
-                index = index[0]
-                content = ' '.join(content_tokens[:1000 + index + 1])
-            content = ' '.join(content_tokens)
+
+        # 2021: Esse bloco abaixo não faz muito sentido, e remove as quebras de linhas em textos acima de 1000 tokens.
+        # content_tokens = content.split()
+        # if len(content_tokens) > 1000:
+        #     index = [content_tokens[1000:].index(token) for token in content_tokens[1000:] if token[-1] in ['.', '!', '?']]
+        #     if index:
+        #         index = index[0]
+        #         content = ' '.join(content_tokens[:1000 + index + 1])
+        #     content = ' '.join(content_tokens)
 
         # Set title.
         title = re.search('<title>.*?</title>', content)
