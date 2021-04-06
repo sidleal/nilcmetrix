@@ -375,7 +375,7 @@ func nilcMetrixEnHandler(w http.ResponseWriter, r *http.Request) {
 	nilcMetrixCall(w, r, "-en")
 }
 
-const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify?secret=xxxxxxxxxxxxxxxxxx&response="
+const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify?secret=yyyyyyyyyyyyy&response="
 
 func validateGoogleRecaptcha(r *http.Request, data string) bool {
 	if data == "" {
@@ -479,7 +479,7 @@ func metricsHandler(w http.ResponseWriter, r *http.Request) {
 
 	key := vars["key"]
 
-	if key != "m3tr1x01" {
+	if key != "yyyyyy" {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
@@ -507,14 +507,14 @@ func metricsHandler(w http.ResponseWriter, r *http.Request) {
 	ret += text + "\n"
 	ret += "-------------------------------" + "\n"
 
-	nWords := strings.Count(text, " ") + 1
-	if nWords > 4000 {
-		ret = "Text is too big."
-		log.Println(ret)
-		w.WriteHeader(http.StatusInternalServerError)
-		fmt.Fprint(w, ret)
-		return
-	}
+	// nWords := strings.Count(text, " ") + 1
+	// if nWords > 4000 {
+	// 	ret = "Text is too big."
+	// 	log.Println(ret)
+	// 	w.WriteHeader(http.StatusInternalServerError)
+	// 	fmt.Fprint(w, ret)
+	// 	return
+	// }
 
 	plain, list, err := callMetrix(subset, text)
 	if err != nil {
@@ -628,12 +628,15 @@ func palavrasHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	key := vars["key"]
-	if key != "m3tr1x01" {
+	if key != "yyyyyyy" {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
 	content := r.FormValue("content")
+	if content == "" {
+		content = r.FormValue("sentence")
+	}
 	options := r.FormValue("options")
 
 	resp, err := http.PostForm("http://palavras:8080/palavras/"+retType,
