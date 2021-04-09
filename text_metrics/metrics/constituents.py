@@ -176,7 +176,6 @@ class WordsBeforeMainVerb(base.Metric):
             # i_root = node_list.index('ROOT')
 
             for node in tree.nodes.values():
-                print("--", node['address'], node['rel'])
                 if node['rel'] == 'ROOT':
                     i_root = int(node['address'])
 
