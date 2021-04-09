@@ -173,8 +173,12 @@ class WordsBeforeMainVerb(base.Metric):
             node_list = [node['rel'] for node in tree.nodes.values()]
             if 'ROOT' not in node_list:
                 continue
+            # i_root = node_list.index('ROOT')
 
-            i_root = node_list.index('ROOT')
+            for node in tree.nodes.values():
+                print("--", node['address'], node['rel'])
+                if node['rel'] == 'ROOT':
+                    i_root = int(node['address'])
 
             if dep_tagset.is_verb(
                     ('', list(tree.nodes.values())[i_root]['tag'])):
