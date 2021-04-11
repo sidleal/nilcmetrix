@@ -160,6 +160,23 @@ class WordsBeforeMainVerb(base.Metric):
     column_name = 'words_before_main_verb'
 
     def value_for_text(self, t, rp=default_rp):
+        """
+        flat = rp.palavras_flat(t)
+        sentences = flat.split('</s>')[:-2]
+
+        total, nsents = 0, 0
+        for sentence in sentences:
+            count = 0
+            words = sentence.split("\n")
+            for word in words:
+                if word != "" and not word.startswith("<") and not word.startswith("$"):
+                    if word.find("<mv>") > 0 and word.find("@FS-STA") > 0:
+                        break
+                    count += 1
+            total += count
+            nsents += 1
+        return total / nsents
+        """
         trees = rp.dep_trees(t)
         words = rp.tagged_words_in_sents(t)
 
