@@ -168,11 +168,20 @@ class WordsBeforeMainVerb(base.Metric):
         for sentence in sentences:
             count = 0
             words = sentence.split("\n")
+            aux_found = False
             for word in words:
                 if word != "" and not word.startswith("<") and not word.startswith("$"):
-                    if (word.find("<mv>") > 0 and word.find("VFIN") > 0) \
-                            or (word.find("<aux>") > 0 and word.find("VFIN") > 0):
+                    if (word.find("<mv>") > 0 and word.find("VFIN") > 0
+                            and (word.find("@FS-STA") > 0 or word.find("@FS-QUE") > 0)):
                         break
+
+                    if (word.find("<aux>") > 0 and word.find(" V ") > 0 and word.find("VFIN") > 0
+                            and word.find("@FS-STA") > 0):
+                        aux_found = True
+
+                    if aux_found and word.find("<mv>") > 0 and word.find(" V ") > 0:
+                        break
+
                     count += 1
             total += count
             nsents += 1
