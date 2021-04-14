@@ -160,7 +160,7 @@ class WordsBeforeMainVerb(base.Metric):
     column_name = 'words_before_main_verb'
 
     def value_for_text(self, t, rp=default_rp):
-        """
+
         flat = rp.palavras_flat(t)
         sentences = flat.split('</s>')[:-2]
 
@@ -170,7 +170,8 @@ class WordsBeforeMainVerb(base.Metric):
             words = sentence.split("\n")
             for word in words:
                 if word != "" and not word.startswith("<") and not word.startswith("$"):
-                    if word.find("<mv>") > 0 and word.find("@FS-STA") > 0:
+                    if (word.find("<mv>") > 0 and word.find("VFIN") > 0) \
+                            or (word.find("<aux>") > 0 and word.find("VFIN") > 0):
                         break
                     count += 1
             total += count
@@ -212,7 +213,7 @@ class WordsBeforeMainVerb(base.Metric):
             sent_scores.append(i_main_verb)
 
         return sum(sent_scores) / len(sent_scores) if sent_scores else 0
-
+        """
 
 class Constituents(base.Category):
     """"""
