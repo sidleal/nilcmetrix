@@ -4492,7 +4492,7 @@
 				<br>
 				<b>Definição dos termos que aparecem na descrição da métrica</b>: verbo principal é o verbo de sentido pleno da oração principal de uma sentença.<br>
 				<br>
-				<b>Limitações da métrica</b>: a precisão da métrica depende do desempenho do parser. Além disso, a contagem de palavras antes do verbo identificado como principal inclui sinais de pontuação, o que não seria necessário.<br>
+				<b>Limitações da métrica</b>: a precisão da métrica depende do desempenho do parser. Além disso, a contagem de palavras antes do verbo identificado como principal trabalha com a tokenização realizada pelo parser Palavras, que inclui descontração de palavras e junção de palavras para formar locuções.<br>
 				<br>
 				<b>Teste 1</b>: <br>
 				<br>
@@ -4508,17 +4508,17 @@
 				<br>
 				Se a ideia for aprovada, os estudantes receberão dois conjuntos anuais, completados por calçado, meias, calça e camiseta.<br>
 				<br>
-				<b>Contagens</b>: 3 orações, 1 principal (receberão) e 1 subordinada adverbial condicional (aprovada), 1 subordinada adjetiva explicativa reduzida de particípio (completados); 8 palavras antes da oração principal, considerando a vírgula (se, a, ideia, for, aprovada, “,”, os, estudantes).<br>
+				<b>Contagens</b>: 3 orações, 1 principal (receberão) e 1 subordinada adverbial condicional (aprovada), 1 subordinada adjetiva explicativa reduzida de particípio (completados); 7 palavras antes da oração principal (se, a, ideia, for, aprovada, os, estudantes).<br>
 				<br>
-				<b>Resultado Esperado</b>: 8<br>
+				<b>Resultado Esperado</b>: 7<br>
 				<br>
-				<b>Resultado Obtido</b>: 8<br>
+				<b>Resultado Obtido</b>: 7<br>
 				<br>
 				<b>Teste 3</b>:<br>
 				<br>
 				Nas inserções que já circulam, o PMDB ataca as denúncias feitas pela Procuradoria Geral da República (PGR) contra o presidente Michel Temer, por conta da Operação Lava Jato, e faz comparações entre a situação econômica de hoje e a do governo Dilma Rousseff.<br>
 				<br>
-				<b>Contagens</b>: 4 orações, 1 subordinada adjetiva restritiva (circulam) e 1 coordenada assindética (ataca), 1 subordinada adjetiva restritiva reduzida de particípio (aprovada), 1 coordenada sindética (faz). 8 palavras antes do primeiro verbo da oração “atacam”, considerando a vírgula (nas, inserções, que, já, circulam, “,”, o, PMDB)<br>
+				<b>Contagens</b>: 4 orações, 1 subordinada adjetiva restritiva (circulam) e 1 coordenada assindética (ataca), 1 subordinada adjetiva restritiva reduzida de particípio (aprovada), 1 coordenada sindética (faz). 8 palavras antes do primeiro verbo da oração “atacam”, considerando a descontração da preposição  “em” e artigo “as” (Nas) (em, as, inserções, que, já, circulam, o, PMDB)<br>
 				<br>
 				<b>Resultado Esperado</b>: 8<br>
 				<br>
