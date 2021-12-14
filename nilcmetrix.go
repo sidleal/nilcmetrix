@@ -119,7 +119,7 @@ var metricMap = map[string]Metric{
 	"dalechall_adapted":                   {"GTN", "Texto", "Índices de Leiturabilidade", "dalechall_adapted", "Fórmula Dale Chall adaptada"},
 	"flesch":                              {"CMP", "Texto", "Índices de Leiturabilidade", "flesch", "Índice Flesch"},
 	"gunning_fox":                         {"GTN", "Texto", "Índices de Leiturabilidade", "gunning_fox", "Índice Gunning Fog"},
-	"honore":                              {"CMD", "Texto", "Índices de Leiturabilidade", "honore", "Estatística de Horoné"},
+	"honore":                              {"CMD", "Texto", "Índices de Leiturabilidade", "honore", "Estatística de Honoré"},
 	"adjective_ratio":                     {"CMP", "Sentença", "Informações Morfossintáticas de Palavras", "adjective_ratio", "Proporção de Adjetivos em relação à quantidade de palavras do texto"},
 	"adverbs":                             {"CMP", "Sentença", "Informações Morfossintáticas de Palavras", "adverbs", "Proporção de Advérbios em relação à quantidade de palavras do texto"},
 	"content_words":                       {"CMP", "Sentença", "Informações Morfossintáticas de Palavras", "content_words", "Proporção de palavras de conteúdo em relação à quantidade de palavras do texto"},
@@ -375,7 +375,7 @@ func nilcMetrixEnHandler(w http.ResponseWriter, r *http.Request) {
 	nilcMetrixCall(w, r, "-en")
 }
 
-const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify?secret=yyyyyyyyyyyyy&response="
+const URL_RECAPTCHA = "https://www.google.com/recaptcha/api/siteverify?secret=yyyyyyy&response="
 
 func validateGoogleRecaptcha(r *http.Request, data string) bool {
 	if data == "" {
@@ -479,7 +479,7 @@ func metricsHandler(w http.ResponseWriter, r *http.Request) {
 
 	key := vars["key"]
 
-	if key != "yyyyyy" {
+	if key != "yyyyy" {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
@@ -628,7 +628,7 @@ func palavrasHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	key := vars["key"]
-	if key != "yyyyyyy" {
+	if key != "yyyyy" {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
