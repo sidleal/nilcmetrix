@@ -12,11 +12,8 @@ Citing this work:
 @article{NILCMetrix2021,
     author = {Sidney Evaldo Leal and Magali Sanchez Duran and Carolina Evaristo Scarton and Nathan Siegle Hartmann and Sandra Maria Aluísio},
     title = {NILC-Metrix: assessing the complexity of written and spoken language in Brazilian Portuguese},
-    journal = {},
     year = {2021},
-    pages = {},
-    volume = {},
-    number = {}
+    note = {https://arxiv.org/abs/2201.03445}
 }
 ````
 
