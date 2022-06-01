@@ -31,7 +31,7 @@ Dependências
 ------------
 - [PostgreSQL](https://www.postgresql.org/)
 - [Python 3](http://python.org/)
-- tools.zip (aprox 2gb) descompactada na raiz
+- [nilc-metrix-tools.zip](https://drive.google.com/file/d/1Ondvnz09RWDAX-1u3GIaXuAmkfKbGtqc/view?usp=sharing) (aprox 2gb) descompactada na raiz
 
 Instale a base de dados do *Coh-Metrix-Dementia*, disponível na raiz desse projeto:
 
