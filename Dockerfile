@@ -18,12 +18,13 @@ WORKDIR /opt/text_metrics
 COPY . .
 
 #RUN cd tools/nlpnet-py3 && python3 setup.py install  && cd ..
-RUN cd tools/idd3 && python3 setup.py install && cd ..
 RUN pip3 install https://github.com/kpu/kenlm/archive/master.zip
 RUN pip3 install psycopg2-binary
 
 RUN pip3 install --no-cache-dir -r requirements.txt
 
 RUN python3 -m nltk.downloader all
+
+RUN cd tools/idd3 && python3 setup.py install
 
 WORKDIR /opt/text_metrics

@@ -178,6 +178,32 @@ nilc_metrics = MetricsSet([BasicCounts(),
                           EXTRA(),
                           ])
 
+no_palavras_metrics = MetricsSet([BasicCounts(),
+                          LogicOperators(),
+                          Frequencies(),
+                          Hypernyms(),
+                          Tokens(),
+                          Connectives(),
+                          Ambiguity(),
+                          Category([YngveComplexity(),
+                                   FrazierComplexity(),
+                                   DependencyDistance(),
+                                   CrossEntropy()],
+                                   name='Syntactical Complexity',
+                                   table_name='syntax'),
+                          Category([ContentDensity()],
+                                   name='Semantic Density',
+                                   table_name='semantic_density'),
+                          #Constituents(),
+                          Anaphoras(),
+                          Coreference(),
+                          Lsa(),
+                          #AIC(),
+                          LIWC(),
+                          #GUTEN(),
+                          EXTRA(),
+                          ])
+
 rp = DefaultResourcePool()
 
 
