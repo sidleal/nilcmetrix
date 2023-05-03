@@ -17,6 +17,22 @@ Citing this work:
 }
 ````
 
+Quick install guide videos with Docker (no audio, only showing steps):
+---------------------------------------
+Part 1: Clone repository and download dependencies:
+
+https://youtu.be/brBfOuTMOM0
+
+Part 2: Create postgres container and restore database:
+
+https://youtu.be/PR2dtr_FMBc
+
+Part 3: Build main container and test (with set of metrics that not depends on Palavras parser):
+
+https://youtu.be/GKQH_1jrmEo
+
+---
+
 Mais detalhes:
 --------------
 
