@@ -8,6 +8,9 @@ License
 
 Citing this work:
 -----------------
+
+Public access via SharedIt: https://rdcu.be/doPTI
+
 Leal, S.E., Duran, M.S., Scarton, C.E., Hartmann, N.S., Aluísio, S.M. NILC-Metrix: assessing the complexity of written and spoken language in Brazilian Portuguese. Lang Resources & Evaluation (2023). https://doi.org/10.1007/s10579-023-09693-w
 
 ````
