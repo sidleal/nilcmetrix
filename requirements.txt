@@ -5,7 +5,7 @@ setuptools~=51.1.1
 numpy~=1.19.5
 nlpnet~=1.2.4
 pip~=20.3.3
-kenlm~=0.0.0
+pypi-kenlm==0.1.20210121
 gensim~=3.8.3
 lxml~=4.6.2
 scipy~=1.6.0

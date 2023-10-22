@@ -479,7 +479,7 @@ func metricsHandler(w http.ResponseWriter, r *http.Request) {
 
 	key := vars["key"]
 
-	if key != "yyyyy" {
+	if key != "yyy" {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
