@@ -37,6 +37,33 @@ Part 3: Build main container and test (with set of metrics that not depends on P
 
 https://youtu.be/GKQH_1jrmEo
 
+Another way to run with docker-hub pre-built image:
+---------------------------------------
+Follow Part 1 and 2 from videos above, still need to setup the postgres database in its own container.
+
+After that, instead of building the nilcmetrix container, you can just run a pre-built from docker-hub. Run the run-nilcmetrix-min.sh from root folder, it will run and expose port 8080 with a simple API that return the metrics in json format:
+
+```console
+$ ./run-nilcmetrix-min.sh 
+Unable to find image 'sidleal/nilcmetrix:latest' locally
+latest: Pulling from sidleal/nilcmetrix
+96d54c3075c9: Already exists 
+...
+Digest: sha256:c3f6ce285dc16e5b3f5d3b1d21fe5384294112e15623a21addd072eedb5f5172
+Status: Downloaded newer image for sidleal/nilcmetrix:latest
+4197a0c2e1644f64b503d623b9bdd264b67599f422f0e1125dd25905e3e64534
+
+$ docker ps
+CONTAINER ID   IMAGE                       COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+4197a0c2e164   sidleal/nilcmetrix:latest   "/bin/sh -c /opt/tex…"   25 seconds ago   Up 23 seconds   0.0.0.0:8080->8080/tcp, :::8080->8080/tcp   nilcmetrix
+677d795e7211   postgres                    "docker-entrypoint.s…"   5 months ago     Up 3 hours      5432/tcp                                    pgs_cohmetrix
+
+$ curl -X POST "http://localhost:8080/api/v1/metrix/_min/yyy?format=json" -H 'Content-Type: text' -d 'Aprender a ler é aprender a ser livre.'
+{"adjective_ratio":0.125,"adverbs":0.0,"content_words":0.75,"flesch":103.24,"function_words":0.25,"sentences_per_paragraph":1.0,"syllables_per_content_word":1.83333,"words_per_sentence":8.0,"noun_ratio":0.0,"paragraphs":1,"sentences":1,"words":8,"pronoun_ratio":0.0,"verbs":0.625,"logic_operators":0.0,"and_ratio":0.0,"if_ratio":0.0,"or_ratio":0.0,"negation_ratio":0.0,"cw_freq":1153140.66667,"cw_freq_brwac":5.57717,"cw_freq_bra":5.4175,"min_cw_freq":23996.0,"min_cw_freq_brwac":4.911,"min_freq_brwac":4.911,"min_cw_freq_bra":4.724,"min_freq_bra":4.724,"freq_brwac":5.89538,"freq_bra":5.94137,"hypernyms_verbs":0.25,"brunet":4.69839,"honore":270.927,"personal_pronouns":0.0,"ttr":0.75,"conn_ratio":0.0,"add_neg_conn_ratio":0.0,"add_pos_conn_ratio":0.0,"cau_neg_conn_ratio":0.0,"cau_pos_conn_ratio":0.0,"log_neg_conn_ratio":0.0,"log_pos_conn_ratio":0.0,"tmp_neg_conn_ratio":0.0,"tmp_pos_conn_ratio":0.0,"adjectives_ambiguity":17.0,"adverbs_ambiguity":0,"nouns_ambiguity":0,"verbs_ambiguity":6.4,"yngve":1.77778,"frazier":7.0,"dep_distance":10.0,"cross_entropy":0.75706,"content_density":3.0,"adjacent_refs":0,"anaphoric_refs":0,"adj_arg_ovl":0,"arg_ovl":0,"adj_stem_ovl":0,"stem_ovl":0,"adj_cw_ovl":0,"lsa_adj_mean":0,"lsa_adj_std":0,"lsa_all_mean":0,"lsa_all_std":0,"lsa_paragraph_mean":0,"lsa_paragraph_std":0,"lsa_givenness_mean":0,"lsa_givenness_std":0,"lsa_span_mean":0,"lsa_span_std":0,"negative_words":0.0,"positive_words":0.16667,"ratio_function_to_content_words":0.33333}
+
+```
+
+
 ---
 
 Mais detalhes:
@@ -63,18 +90,6 @@ Instale os pacotes do python, opcionalmente em um [virtualenv](https://virtualen
 
 	$ pip install -r text_metrics/requirements.txt
 
-Ou
-
-```
-$ pip3 install nltk
-$ pip3 install numpy
-$ pip3 install nlpnet
-$ pip3 install gensim
-$ pip3 install https://github.com/kpu/kenlm/archive/master.zip
-$ pip3 install lxml
-$ pip3 install psycopg2-binary
-$ cd tools/idd3/ && python3 setup.py install
-```
 
 
 Configuração inicial
