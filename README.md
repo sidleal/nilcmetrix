@@ -62,6 +62,15 @@ $ curl -X POST "http://localhost:8080/api/v1/metrix/_min/yyy?format=json" -H 'Co
 {"adjective_ratio":0.125,"adverbs":0.0,"content_words":0.75,"flesch":103.24,"function_words":0.25,"sentences_per_paragraph":1.0,"syllables_per_content_word":1.83333,"words_per_sentence":8.0,"noun_ratio":0.0,"paragraphs":1,"sentences":1,"words":8,"pronoun_ratio":0.0,"verbs":0.625,"logic_operators":0.0,"and_ratio":0.0,"if_ratio":0.0,"or_ratio":0.0,"negation_ratio":0.0,"cw_freq":1153140.66667,"cw_freq_brwac":5.57717,"cw_freq_bra":5.4175,"min_cw_freq":23996.0,"min_cw_freq_brwac":4.911,"min_freq_brwac":4.911,"min_cw_freq_bra":4.724,"min_freq_bra":4.724,"freq_brwac":5.89538,"freq_bra":5.94137,"hypernyms_verbs":0.25,"brunet":4.69839,"honore":270.927,"personal_pronouns":0.0,"ttr":0.75,"conn_ratio":0.0,"add_neg_conn_ratio":0.0,"add_pos_conn_ratio":0.0,"cau_neg_conn_ratio":0.0,"cau_pos_conn_ratio":0.0,"log_neg_conn_ratio":0.0,"log_pos_conn_ratio":0.0,"tmp_neg_conn_ratio":0.0,"tmp_pos_conn_ratio":0.0,"adjectives_ambiguity":17.0,"adverbs_ambiguity":0,"nouns_ambiguity":0,"verbs_ambiguity":6.4,"yngve":1.77778,"frazier":7.0,"dep_distance":10.0,"cross_entropy":0.75706,"content_density":3.0,"adjacent_refs":0,"anaphoric_refs":0,"adj_arg_ovl":0,"arg_ovl":0,"adj_stem_ovl":0,"stem_ovl":0,"adj_cw_ovl":0,"lsa_adj_mean":0,"lsa_adj_std":0,"lsa_all_mean":0,"lsa_all_std":0,"lsa_paragraph_mean":0,"lsa_paragraph_std":0,"lsa_givenness_mean":0,"lsa_givenness_std":0,"lsa_span_mean":0,"lsa_span_std":0,"negative_words":0.0,"positive_words":0.16667,"ratio_function_to_content_words":0.33333}
 
 ```
+Example with python:
+```
+import urllib.request
+url = 'http://localhost:8080/api/v1/metrix/_min/yyy?format=json'
+text = bytearray('Isso é um texto de teste.', encoding='utf-8')
+req = urllib.request.Request(url, data=text, headers={'content-type': 'text/plain'})
+response = urllib.request.urlopen(req)
+print(response.read().decode('utf8'))
+```
 
 
 ---
