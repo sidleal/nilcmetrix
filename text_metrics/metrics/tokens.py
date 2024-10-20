@@ -297,8 +297,11 @@ class HoroneStatistic(base.Metric):
         one_time_tokens = [word for word, count in counter.items()
                            if count == 1]
 
-        honore_index = 100 * log(len(tokens), 10) /\
-            (1 - len(one_time_tokens) / len(types))
+        divisor = (1 - len(one_time_tokens) / len(types))
+        if divisor == 0:
+            divisor = 0.1 # to avoid division by 0
+
+        honore_index = 100 * log(len(tokens), 10) / divisor
 
         return honore_index
 
