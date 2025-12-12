@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 import text_metrics
 import sys
+import json
+import datetime
+import time
 
 feat_list = ["adj_arg_ovl", "arg_ovl", "adj_stem_ovl", "stem_ovl", "adj_cw_ovl", "adjacent_refs", "anaphoric_refs", "if_ratio", "or_ratio", "and_ratio", "logic_operators", "negation_ratio", "hypernyms_verbs", "conn_ratio", "add_pos_conn_ratio", "add_neg_conn_ratio", "tmp_pos_conn_ratio", "tmp_neg_conn_ratio", "cau_pos_conn_ratio", "cau_neg_conn_ratio", "log_pos_conn_ratio", "log_neg_conn_ratio", "function_words", "content_words", "pronoun_ratio", "adjective_ratio", "words", "paragraphs", "verbs", "adverbs", "words_per_sentence", "syllables_per_content_word", "sentences_per_paragraph", "noun_ratio", "sentences", "flesch", "ttr", "personal_pronouns", "verbs_ambiguity", "adjectives_ambiguity", "nouns_ambiguity", "adverbs_ambiguity", "mean_noun_phrase", "words_before_main_verb", "min_cw_freq", "cw_freq"]
 
@@ -20,9 +23,6 @@ t = text_metrics.Text(raw)
 ret = text_metrics.CMP_METRICS.values_for_text(t).as_flat_dict()
 
 if use_json:
-    import json
-    import datetime
-    import time
     
     processing_time = time.time()
     result_data = {
