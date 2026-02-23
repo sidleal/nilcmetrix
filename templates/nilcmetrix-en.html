@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="static/css/main.css?[[ .StaticHash ]]" />
 		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+		<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?compat=recaptcha" async defer></script>
 	</head>
 	<body class="is-preload">
 
@@ -74,7 +75,7 @@
 								<textarea name="text" id="text" placeholder="Enter your text here" rows="12"></textarea>
 							</div>
 							<div class="col-12">
-								<div class="g-recaptcha" data-sitekey="6LeON4MaAAAAAJQ73u7TepaY_omDkT79sbcTKJJw" style="margin-bottom: 20px;"></div>
+								<div class="g-recaptcha" data-sitekey="0x4AAAAAACg6sunHpjTbBWHp" style="margin-bottom: 20px;"></div>
 								<ul class="actions">
 									<li><input type="submit" onclick="body.style = 'cursor: wait;';this.style = 'cursor: wait;';eval()" value="Submit" class="primary" /></li>
 									<li><input type="reset" value="Clear" onclick="$('#text').val('');$('#text').focus();"/></li>
@@ -117,7 +118,6 @@
 		</footer>
 
 	<!-- Scripts -->
-		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 		<script src="static/js/jquery.min.js"></script>
 		<script src="static/js/jquery.scrolly.min.js"></script>
 		<script src="static/js/browser.min.js"></script>
