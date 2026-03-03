@@ -34,8 +34,8 @@
 				</section>
 				[[end]]
 					
-				[[if .ShowResults]]
-				<section>
+
+				<section id="resultsSection" style="display: none;">
 					<div class="table-wrapper" id="results">
 						<h3>Resultados</h3>
 						<table class="alt" id="table_results" name="table_results">
@@ -48,40 +48,32 @@
 									<th>Value</th>
 								</tr>
 							</thead>
-							<tbody>
-								[[range .MetricList]]
-								<tr>
-									<td>[[.Index]]</td>
-									<td>[[.Class]]</td>
-									<td><a href="/metrixdoc#[[.Metric]]" target="_blank">[[.Metric]]</a></td>
-									<td width="50%"><a href="/metrixdoc#[[.Metric]]" target="_blank">[[.Description]]</a></td>
-									<td>[[.Value]]</td>
-								</tr>
-								[[end]]
-							</tbody>
+							<tbody id="resultsBody">
+								</tbody>
 						</table>
 					</div>
 					<div class="col-12">
 						<ul class="actions">
 							<li><input name="export" id="export" type="button" value="Export to CSV" class="primary" /></li>
 						</ul>
-					</div>
+					</div>					
 				</section>
-				[[end]]
 
 				<section>
 					<h4>Enter your text in the following box (Max 2000 words at a time).</h4>
-					<form method="post" action="/nilcmetrix-en">
+					<form id="textForm" onsubmit="event.preventDefault(); processText();">
 						<div class="row gtr-uniform">
 							<div class="col-12">
-								<textarea name="text" id="text" placeholder="Enter your text here" rows="12"></textarea>
+								<textarea name="text" id="textInput" placeholder="Enter your text here" rows="12"></textarea>
 							</div>
 							<div class="col-12">
 								<div class="g-recaptcha" data-sitekey="0x4AAAAAACg6sunHpjTbBWHp" style="margin-bottom: 20px;"></div>
 								<ul class="actions">
-									<li><input type="submit" onclick="body.style = 'cursor: wait;';this.style = 'cursor: wait;';eval()" value="Submit" class="primary" /></li>
-									<li><input type="reset" value="Clear" onclick="$('#text').val('');$('#text').focus();"/></li>
+									<li><input type="submit" id="submitBtn" value="Submit" class="primary" /></li>
+									<li><input type="reset" value="Limpar" onclick="$('#textInput').val('');$('#textInput').focus();"/></li>
 								</ul>
+								
+								<div id="statusMessage" style="margin-top: 15px; font-weight: bold; color: #8716D5;"></div>
 							</div>
 						</div>
 					</form>
@@ -133,5 +125,90 @@
 		<script language="javascript">
 			$('#text').val('[[.Text]]');
 		</script>
+
+		<script>
+		function processText() {
+			const text = document.getElementById('textInput').value;
+			const submitBtn = document.getElementById('submitBtn');
+			const statusMsg = document.getElementById('statusMessage');
+			const resultsSection = document.getElementById('resultsSection');
+			const resultsBody = document.getElementById('resultsBody');
+			
+			// Get Cloudflare Turnstile token
+			const formData = new FormData(document.getElementById('textForm'));
+			const captcha = formData.get('g-recaptcha-response');
+
+			if (!text) return;
+
+			// UI updates for loading state
+			submitBtn.disabled = true;
+			submitBtn.value = "Conecting...";
+			document.body.style.cursor = 'wait';
+			resultsSection.style.display = 'none';
+
+			// Open WebSocket Connection (WSS for https, WS for http)
+			const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+			const ws = new WebSocket(protocol + window.location.host + "/ws/metrix");
+
+			ws.onopen = function() {
+				ws.send(JSON.stringify({
+					text: text,
+					captcha: captcha
+				}));
+			};
+
+			ws.onmessage = function(event) {
+				const response = JSON.parse(event.data);
+
+				if (response.status === "processing") {
+					statusMsg.innerText = response.message;
+					submitBtn.value = "Processing...";
+				} 
+				else if (response.status === "error") {
+					statusMsg.innerText = response.message;
+					statusMsg.style.color = "red";
+					resetUI();
+					ws.close();
+				} 
+				else if (response.status === "success") {
+					statusMsg.innerText = "";
+					
+					// Build the table dynamically
+					resultsBody.innerHTML = ""; 
+					response.results.forEach(item => {
+						const row = `<tr>
+							<td>${item.i}</td>
+							<td>${item.c}</td>
+							<td><a href="/metrixdoc#${item.k}" target="_blank">${item.k}</a></td>
+							<td width="50%"><a href="/metrixdoc#${item.k}" target="_blank">${item.d}</a></td>
+							<td>${item.v}</td>
+						</tr>`;
+						resultsBody.insertAdjacentHTML('beforeend', row);
+					});
+
+					resultsSection.style.display = 'block';
+					resetUI();
+					
+					// Optionally scroll to results
+					document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+					ws.close();
+				}
+			};
+
+			ws.onerror = function(error) {
+				statusMsg.innerText = "Error connecting.";
+				statusMsg.style.color = "red";
+				resetUI();
+			};
+
+			function resetUI() {
+				submitBtn.disabled = false;
+				submitBtn.value = "Submit";
+				document.body.style.cursor = 'default';
+				// Reset turnstile so the user can submit again if needed
+				turnstile.reset(); 
+			}
+		}
+		</script>		
 	</body>
 </html>
