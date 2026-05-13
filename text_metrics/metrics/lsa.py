@@ -337,57 +337,71 @@ class LsaGivennessStd(LsaGivennessBase):
 
 
 class LsaSpanBase(base.Metric):
-    """A base class for LSA span metrics."""
+    """Base class for LSA span metrics.
 
-    def get_value(self, similarities):
-        """Given a list of similarities between sentences and the span of the
-        previous text, return the value of the metric.
-        """
+    `lsa_span_mean` and `lsa_span_std` differ only in their aggregation
+    over the same span array; the array itself is cached as the
+    `lsa_spans` ResourcePool resource so the two metrics share the work.
+    """
+
+    def get_value(self, spans):
+        """Given the span array, return the value of the metric."""
 
         raise NotImplementedError('Subclasses should override this method')
 
     def value_for_text(self, t, rp=default_rp):
-        space = rp.lsa_space()
-        num_topics = space.num_topics
-
-        tokens = rp.tokens(t)
-        tokens = [[token.lower() for token in sentence] for sentence in tokens]
-
-        if len(tokens) < 2:
+        spans = rp.lsa_spans(t)
+        if spans is None:
             return 0
-        # print("----------------------------> ", self.column_name, "<------------------------------------")
-        spans = np.zeros(len(tokens) - 1)
-        for i in range(1, len(tokens)):
-            past_sentences = tokens[:i]
-            span_dim = len(past_sentences)
-
-            # print("Tokens -->", tokens[i])
-            if span_dim > num_topics - 1:
-                # It's not clear, from the papers I read, what should be done
-                # in this case. I did what seemed to not imply in loosing
-                # information.
-                beginning = past_sentences[0:span_dim - num_topics]
-                past_sentences[0] = list(chain.from_iterable(beginning))
-
-            past_vectors = [space.get_vector(sent) for sent in past_sentences]
-
-            curr_vector = space.get_vector(tokens[i])
-            curr_array = np.array(curr_vector).reshape(num_topics, 1)
-
-            A = np.array(past_vectors).transpose()
-
-            projection_matrix = dot(dot(A,
-                                        pinv(dot(A.transpose(),
-                                                 A))),
-                                    A.transpose())
-
-            projection = dot(projection_matrix, curr_array).ravel()
-
-            spans[i - 1] = cossim(full2sparse(curr_vector),
-                                  full2sparse(projection))
-            # print("span --> ", spans[i-1], "\n")
-
         return round(self.get_value(spans), 5)
+
+
+def compute_lsa_spans(t, rp):
+    """Hook for the `lsa_spans` ResourcePool resource.
+
+    Returns the per-sentence LSA span array (cosine of each sentence
+    against the LSA projection of all preceding sentences), or `None`
+    for texts with fewer than two sentences.
+    """
+    space = rp.lsa_space()
+    num_topics = space.num_topics
+
+    tokens = rp.tokens(t)
+    tokens = [[token.lower() for token in sentence] for sentence in tokens]
+
+    if len(tokens) < 2:
+        return None
+
+    spans = np.zeros(len(tokens) - 1)
+    for i in range(1, len(tokens)):
+        past_sentences = tokens[:i]
+        span_dim = len(past_sentences)
+
+        if span_dim > num_topics - 1:
+            # It's not clear, from the papers I read, what should be done
+            # in this case. I did what seemed to not imply in loosing
+            # information.
+            beginning = past_sentences[0:span_dim - num_topics]
+            past_sentences[0] = list(chain.from_iterable(beginning))
+
+        past_vectors = [space.get_vector(sent) for sent in past_sentences]
+
+        curr_vector = space.get_vector(tokens[i])
+        curr_array = np.array(curr_vector).reshape(num_topics, 1)
+
+        A = np.array(past_vectors).transpose()
+
+        projection_matrix = dot(dot(A,
+                                    pinv(dot(A.transpose(),
+                                             A))),
+                                A.transpose())
+
+        projection = dot(projection_matrix, curr_array).ravel()
+
+        spans[i - 1] = cossim(full2sparse(curr_vector),
+                              full2sparse(projection))
+
+    return spans
 
 
 class LsaSpanMean(LsaSpanBase):
