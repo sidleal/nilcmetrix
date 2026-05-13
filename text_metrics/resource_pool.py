@@ -31,6 +31,7 @@ from text_metrics.utils import is_valid_id, ilen
 from text_metrics.database import create_engine, create_session, Helper
 from text_metrics.conf import config
 from text_metrics.tools.freq_corpora import brwac_frequencies, brasileiro_frequencies
+from text_metrics.profiling import timed_block
 
 import re
 import logging
@@ -123,14 +124,18 @@ class ResourcePool(object):
         if suffix in self._pinned:
             index = self._get_index(self._pinned_cache, suffix, args)
             if index is None:
-                self._pinned_cache.append((suffix, args, self._hooks[suffix](*args)))
+                with timed_block("rp." + suffix):
+                    value = self._hooks[suffix](*args)
+                self._pinned_cache.append((suffix, args, value))
                 index = len(self._pinned_cache) - 1
 
             return self._pinned_cache[index][2]
         else:
             index = self._get_index(self._unpinned_cache, suffix, args)
             if index is None:
-                self._unpinned_cache.append((suffix, args, self._hooks[suffix](*args)))
+                with timed_block("rp." + suffix):
+                    value = self._hooks[suffix](*args)
+                self._unpinned_cache.append((suffix, args, value))
                 index = len(self._unpinned_cache) - 1
             value = self._unpinned_cache[index][2]
 
