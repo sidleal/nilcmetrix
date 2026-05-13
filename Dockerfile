@@ -1,26 +1,36 @@
 # cohmetrix
-FROM ubuntu:focal
+FROM ubuntu:noble
 
 ENV TZ=America/Sao_Paulo
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt update 
-RUN apt install -y python3 python3-pip python3-numpy 
+RUN apt update
+RUN apt install -y python3 python3-pip python3-numpy
 RUN apt install -y default-jre
-#RUN apt install -y python3 python3-pip locales libpq-dev libxml2-dev libxslt1-dev python3-dev python3-lxml
-#RUN apt-get install -y python3-numpy python3-scipy python3-matplotlib ipython ipython-notebook python3-pandas python3-sympy python3-nose
-#RUN apt-get install -y python3-sklearn default-jre
+RUN apt install -y cmake build-essential libboost-all-dev libeigen3-dev zlib1g-dev libbz2-dev liblzma-dev patch python3-venv
 
-RUN pip3 install --upgrade pip
-RUN pip3 install --upgrade setuptools 
+# Use a venv so pip installs don't trip PEP 668's "externally-managed" guard.
+RUN python3 -m venv --system-site-packages /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
 
 WORKDIR /opt/text_metrics
 
 COPY . .
 
-#RUN cd tools/nlpnet-py3 && python3 setup.py install  && cd ..
-RUN pip3 install psycopg2-binary
+RUN pip3 install psycopg2-binary Cython
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+# --no-build-isolation: legacy pins in requirements.txt (and the vendored
+# nlpnet fork below) don't declare PEP 517 build deps properly, so isolated
+# builds either fail or compile C extensions against a different numpy than
+# runtime, causing ABI mismatches. Reusing the current env (which already has
+# numpy + Cython from the step above) keeps the build consistent.
+RUN pip3 install --no-cache-dir --no-build-isolation -r requirements.txt
+
+# Apply our Py3.12/modern-numpy patch to the vendored nlpnet fork.
+RUN patch -d tools/nlpnet-py3 -p1 < patches/nlpnet-py3.patch
+
+RUN pip3 install --no-build-isolation ./tools/nlpnet-py3
 
 RUN python3 -m nltk.downloader all
 
