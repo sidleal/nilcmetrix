@@ -22,7 +22,7 @@ from text_metrics.utils import adjacent_pairs, all_pairs
 import numpy as np
 from numpy import dot
 from scipy.linalg import pinv
-from gensim.matutils import cossim, sparse2full, full2sparse
+from gensim.matutils import cossim, full2sparse
 from text_metrics.tools import senter, word_tokenize
 from itertools import chain
 
@@ -45,13 +45,10 @@ class LsaBase(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         space = rp.lsa_space()
         similarities = []
-        # print("----------------------------> ", self.column_name, " <---------------------------------------")
         for s1, s2 in self.get_pairs(t, rp):
-            # print("SENTENÇA a :===> ", s1)
-            # print("SENTENÇA b :===> ", s2)
-            # print("SIMILARIDADE :===>", space.compute_similarity(s1, s2))
-            # print("-----------------------------------------------------------------")
-            similarities.append(space.compute_similarity(s1, s2))
+            v1 = space.get_vector(s1)
+            v2 = space.get_vector(s2)
+            similarities.append(space.compute_similarity(v1, v2))
 
         if not similarities:
             return 0
@@ -372,10 +369,9 @@ class LsaSpanBase(base.Metric):
                 beginning = past_sentences[0:span_dim - num_topics]
                 past_sentences[0] = list(chain.from_iterable(beginning))
 
-            past_vectors = [sparse2full(space.get_vector(sent), num_topics)
-                            for sent in past_sentences]
+            past_vectors = [space.get_vector(sent) for sent in past_sentences]
 
-            curr_vector = sparse2full(space.get_vector(tokens[i]), num_topics)
+            curr_vector = space.get_vector(tokens[i])
             curr_array = np.array(curr_vector).reshape(num_topics, 1)
 
             A = np.array(past_vectors).transpose()
