@@ -39,6 +39,14 @@ class LsaSpace(object):
         self._lsa_model = pickle.load(f)
         f.close()
 
+        # The same sentence is fed to LSA many times within a run:
+        # `LsaSentenceAllMean` makes N*(N-1)/2 sentence-pair calls (each
+        # sentence appears in N-1 pairs), `LsaSpanBase` recomputes every
+        # past sentence's vector at every span step (~N^2/2 calls total).
+        # `get_vector` is a pure function of the token sequence, so
+        # caching by `tuple(tokens)` collapses the redundancy.
+        self._vector_cache = {}
+
     def word2vec(self, word):
         if word.lower() in self._lsa_model:
             return self._lsa_model[word.lower()]
@@ -59,7 +67,13 @@ class LsaSpace(object):
         return zdoc_vec
 
     def get_vector(self, doc):
-        return self.doc2vec(doc)
+        key = tuple(doc)
+        cached = self._vector_cache.get(key)
+        if cached is not None:
+            return cached
+        vec = self.doc2vec(doc)
+        self._vector_cache[key] = vec
+        return vec
 
     @property
     def num_topics(self):
