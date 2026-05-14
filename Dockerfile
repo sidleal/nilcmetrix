@@ -34,6 +34,7 @@ RUN pip3 install --no-build-isolation ./tools/nlpnet-py3
 
 RUN python3 -m nltk.downloader all
 
+# TODO: replace deprecated `setup.py install` with `pip3 install --no-build-isolation ./tools/idd3`
 RUN cd tools/idd3 && python3 setup.py install
 
 WORKDIR /opt/text_metrics
