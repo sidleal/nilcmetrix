@@ -20,9 +20,6 @@ from text_metrics import base
 from text_metrics.resource_pool import rp as default_rp
 from text_metrics.utils import adjacent_pairs, all_pairs
 import numpy as np
-from numpy import dot
-from scipy.linalg import pinv
-from gensim.matutils import cossim, full2sparse
 from text_metrics.tools import senter, word_tokenize
 from itertools import chain
 
@@ -385,21 +382,20 @@ def compute_lsa_spans(t, rp):
             past_sentences[0] = list(chain.from_iterable(beginning))
 
         past_vectors = [space.get_vector(sent) for sent in past_sentences]
-
         curr_vector = space.get_vector(tokens[i])
-        curr_array = np.array(curr_vector).reshape(num_topics, 1)
 
-        A = np.array(past_vectors).transpose()
+        # Project curr onto span(past_vectors). Equivalent to applying
+        # the full projection matrix A · pinv(AᵀA) · Aᵀ to curr, but
+        # without ever forming it: lstsq returns the coefficients, then
+        # A @ coef gives the projection directly. Cosine is then a
+        # straight dense computation.
+        A = np.asarray(past_vectors).T
+        coef, *_ = np.linalg.lstsq(A, curr_vector, rcond=None)
+        projection = A @ coef
 
-        projection_matrix = dot(dot(A,
-                                    pinv(dot(A.transpose(),
-                                             A))),
-                                A.transpose())
-
-        projection = dot(projection_matrix, curr_array).ravel()
-
-        spans[i - 1] = cossim(full2sparse(curr_vector),
-                              full2sparse(projection))
+        n1 = np.linalg.norm(curr_vector)
+        n2 = np.linalg.norm(projection)
+        spans[i - 1] = float(curr_vector @ projection / (n1 * n2)) if n1 and n2 else 0.0
 
     return spans
 
