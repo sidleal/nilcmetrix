@@ -24,7 +24,7 @@ from text_metrics.tools import senter, word_tokenize,\
     positive_words, negative_words, simple_words, discourse_markers,\
     ambiguous_discourse_markers, getTemporalExpressions, pronomes_indefinidos,\
     palavras_dificeis, calc_log, conjuncoes_fund1, conjuncoes_fund2,\
-    translate, concreteness, load_psicolinguistico, palavras_tree
+    translate, concreteness, load_psicolinguistico
 from text_metrics.tools.lsa import LsaSpace
 from text_metrics.tools.lm import KenLmLanguageModel
 from text_metrics.utils import is_valid_id, ilen
@@ -193,7 +193,6 @@ class DefaultResourcePool(ResourcePool):
         self.register('parse_trees', self._parse_trees)
         self.register('dep_trees', self._dep_trees)
         self.register('palavras_flat', self._palavras_flat)
-        self.register('palavras_tree', self._palavras_tree)
 
         self.register('toplevel_nps_per_sentence', self._toplevel_nps_per_sentence)
         self.register('leaves_in_toplevel_nps', self._leaves_in_toplevel_nps)
@@ -290,7 +289,9 @@ class DefaultResourcePool(ResourcePool):
         Return the number of clauses found on text.
 
         Number of clauses is defined as the number of main verbs: using PALAVRAS,
-        it's the words with "V" tags and without "<aux>" tags
+        it's the words with "V" tags and without "<aux>" tags.
+
+        Requires the Palavras parser (via `palavras_flat`).
         """
         flat = self.get('palavras_flat', text)
         return flat.count(' V ') - flat.count('<aux>')
@@ -714,6 +715,8 @@ class DefaultResourcePool(ResourcePool):
     def _palavras_flat(self, text):
         """Return a PALAVRAS flat tree for a given text.
 
+        Requires the Palavras parser.
+
         :returns: a string.
         """
         treepath = join(config['FLAT_TREES'], basename(text.filepath))
@@ -723,13 +726,6 @@ class DefaultResourcePool(ResourcePool):
         else:
             flat = palavras_flat(text)
         return flat
-
-    def _palavras_tree(self, text):
-        """Return a PALAVRAS flat tree for a given text.
-
-        :returns: a string.
-        """
-        return palavras_tree(text)
 
     def _positive_words(self):
         """Return LIWC's list of positive words.
