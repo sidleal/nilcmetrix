@@ -4,11 +4,23 @@
 import pytest
 
 import text_metrics
-from text_metrics.metrics.guten import GunningFog
+from text_metrics.metrics.guten import (
+    GunningFog,
+    PunctuationRatio,
+    PunctuationDiversity,
+)
 
 
 def gunning_fox(text):
     return GunningFog().value_for_text(text_metrics.Text(text))
+
+
+def ratio(text):
+    return PunctuationRatio().value_for_text(text_metrics.Text(text))
+
+
+def diversity(text):
+    return PunctuationDiversity().value_for_text(text_metrics.Text(text))
 
 
 # ---------------------------------------------------------------------------
@@ -44,3 +56,64 @@ class TestGunningFog:
     )
     def test_complex_words_enter_as_a_percentage(self, label, text, expected):
         assert gunning_fox(text) == pytest.approx(expected), label
+
+
+# ---------------------------------------------------------------------------
+# punctuation_ratio = punctuation signs / all tokens
+# ---------------------------------------------------------------------------
+
+class TestPunctuationRatio:
+
+    def test_text_without_punctuation_is_zero(self):
+        assert ratio("casa azul grande") == 0.0
+
+    @pytest.mark.parametrize(
+        "label, text, expected",
+        [
+            # comma + exclamation over 4 tokens
+            ("comma and bang", "Olá, mundo!", 0.5),
+            # travessão counts as a sign: travessão + comma + period over 6 tokens
+            ("travessão", "— Olá, disse ele.", 0.5),
+            # reticências count as a single sign: ellipsis + period over 5 tokens
+            ("ellipsis", "Espere... já vou.", 0.4),
+            # every sign type at once: , ; : . ? over 12 tokens
+            ("all sign types", "A casa, azul; o teto: branco. Sim?", 5 / 12),
+        ],
+    )
+    def test_counts_each_punctuation_sign(self, label, text, expected):
+        assert ratio(text) == pytest.approx(expected), label
+
+    def test_numbers_are_not_punctuation(self):
+        # Replacing a number with a same-length-in-tokens word leaves the ratio
+        # unchanged: digits and slashes contribute no punctuation.
+        assert ratio("Custou 1000 reais.") == ratio("Custou mil reais.")
+        assert ratio("Em 25/12/2017, comemoramos.") == ratio(
+            "Em dezembro, comemoramos."
+        )
+
+    def test_compound_word_hyphens_are_not_punctuation(self):
+        # The hyphen joining a compound word is part of the word, not a sign.
+        assert ratio("Reunião na terça-feira.") == ratio("Reunião na segunda.")
+
+
+# ---------------------------------------------------------------------------
+# punctuation_diversity = variety of punctuation signs among the signs used
+# ---------------------------------------------------------------------------
+
+class TestPunctuationDiversity:
+
+    def test_text_without_punctuation_is_zero(self):
+        assert diversity("casa azul grande") == 0.0
+
+    def test_all_distinct_signs_is_maximal(self):
+        assert diversity("A casa, azul; o teto: branco. Sim?") == pytest.approx(1.0)
+
+    def test_repeated_signs_lower_diversity(self):
+        # Three commas and a period are two types among four signs.
+        assert diversity("Vim, vi, venci.") < diversity("Olá, mundo!")
+
+    def test_numbers_are_not_punctuation(self):
+        assert diversity("Custou 1000 reais.") == diversity("Custou mil reais.")
+
+    def test_compound_word_hyphens_are_not_punctuation(self):
+        assert diversity("Reunião na terça-feira.") == diversity("Reunião na segunda.")

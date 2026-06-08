@@ -5253,6 +5253,29 @@ class ContentDensity(base.Metric):
         return ilen(content_words) / ilen(function_words)
 
 
+# Single definition of "a punctuation sign", shared by PunctuationRatio and
+# PunctuationDiversity so the two metrics can never disagree on the same text.
+# Run with re.findall over t.raw_content; each match is one punctuation token.
+#
+# Counted:   . , : ; ! ? ( )   reticências (..+)   travessão (—, –, or a hyphen
+#            flanked by whitespace, i.e. used as a dialogue dash).
+# NOT counted:
+#   - digits and "/": the old class wrote the hyphen as the range ",-:", which
+#     regex expanded to ",-./0-9:" — so every digit and slash was miscounted as
+#     punctuation. They are not punctuation; keep the hyphen a literal, last.
+#   - the hyphen inside compound words (terça-feira, guarda-chuva): it joins a
+#     word and is not a sign, so the bare "-" stays out of the class and is only
+#     matched via the \s-flanked alternation above.
+# This is raw-character counting; it is unrelated to the tag-based
+# tagset.is_punctuation() path (POS tag == 'PU'/'PUNCT') used elsewhere.
+_PUNCTUATION = re.compile('''
+                          \\.\\.+|         # ponto final e reticências
+                          \\s+\\-|\\-\\s+| # travessão escrito como hífen
+                          [.!(),:;?—–]     # demais pontuações
+                          ''',
+                          re.VERBOSE)
+
+
 class PunctuationRatio(base.Metric):
     """
         **Nome da Métrica**: punctuation_ratio
@@ -5300,13 +5323,8 @@ class PunctuationRatio(base.Metric):
     column_name = 'punctuation_ratio'
 
     def value_for_text(self, t, rp=default_rp):
-        expression = re.compile('''
-                                \\.\\.+|       # ponto final e reticências
-                                [.!(),-:;?]    # Demais pontuações
-                                ''',
-                                re.VERBOSE)
         try:
-            return len(re.findall(expression, t.raw_content)) /\
+            return len(re.findall(_PUNCTUATION, t.raw_content)) /\
                 len(rp._all_tokens(t))
         except ZeroDivisionError:
             return 0
@@ -5360,14 +5378,8 @@ class PunctuationDiversity(base.Metric):
     column_name = 'punctuation_diversity'
 
     def value_for_text(self, t, rp=default_rp):
-        expression = re.compile('''
-                                \\.\\.+|         # ponto final e reticências
-                                \\s+\\-|\\-\\s+| # hifens
-                                [.!(),–:;?]      # Demais pontuações
-                                ''',
-                                re.VERBOSE)
         try:
-            puncts = re.findall(expression, t.raw_content)
+            puncts = re.findall(_PUNCTUATION, t.raw_content)
             return rp.mattr(puncts)
             # return len(set(puncts)) / len(puncts)
         except ZeroDivisionError:
