@@ -8,6 +8,9 @@ from text_metrics.metrics.guten import (
     GunningFog,
     PunctuationRatio,
     PunctuationDiversity,
+    AdverbsMin,
+    AdverbsMax,
+    AdverbsStandardDeviation,
 )
 
 
@@ -117,3 +120,36 @@ class TestPunctuationDiversity:
 
     def test_compound_word_hyphens_are_not_punctuation(self):
         assert diversity("Reunião na terça-feira.") == diversity("Reunião na segunda.")
+
+
+def adverbs_min(text):
+    return AdverbsMin().value_for_text(text_metrics.Text(text))
+
+
+def adverbs_max(text):
+    return AdverbsMax().value_for_text(text_metrics.Text(text))
+
+
+def adverbs_std(text):
+    return AdverbsStandardDeviation().value_for_text(text_metrics.Text(text))
+
+
+# ---------------------------------------------------------------------------
+# adverbs_min / _max / _standard_deviation — statistics of the per-sentence
+# adverb ratio. "Adverb" includes ADV, PREP+ADV, and PDEN (denotative words
+# such as "também", "só", "ainda"), matching the adverbs / adverbs_diversity
+# definitions.
+# ---------------------------------------------------------------------------
+
+class TestAdverbsPerSentence:
+
+    # Three sentences of three tokens each, one adverb-like word per sentence:
+    # "rapidamente" (ADV), "também" (PDEN), "diretamente" (ADV).
+    _TEXT = "Pedro correu rapidamente. Maria também correu. João correu diretamente."
+
+    def test_pden_words_count_as_adverbs(self):
+        # Counting the PDEN "também" makes every sentence 1/3 adverbs, so the
+        # per-sentence minimum is 1/3 (not 0) and the spread is zero.
+        assert adverbs_min(self._TEXT) == pytest.approx(1 / 3)
+        assert adverbs_max(self._TEXT) == pytest.approx(1 / 3)
+        assert adverbs_std(self._TEXT) == pytest.approx(0.0)

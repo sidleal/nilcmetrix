@@ -3569,6 +3569,10 @@ class ContentWordsAmbiguity(base.Metric):
     def value_for_text(self, t, rp=default_rp):
         adjectives = get_meanings_count(rp, t, 'A', 'Adjetivo',
                                          rp.pos_tagger().tagset.is_adjective)
+        # Bare is_adverb here, not _counts_as_adverb: this counts dictionary
+        # word-senses per POS class, and PDEN denotative words ("também", "só")
+        # have no entry in that ambiguity lexicon — they belong only to the
+        # adverb-frequency metrics, not to this meaning count.
         adverbs = get_meanings_count(rp, t, 'ADV', 'Advérbio',
                                       rp.pos_tagger().tagset.is_adverb)
         nouns = get_meanings_count(rp, t, 'N', 'Substantivo',
@@ -4210,6 +4214,17 @@ class PronounDiversity(base.Metric):
             return 0
 
 
+def _counts_as_adverb(token):
+    """Whether a tagged token counts as an adverb for the adverbs_* metrics.
+
+    One definition shared by adverbs, adverbs_diversity_ratio, adverbs_min,
+    adverbs_max and adverbs_standard_deviation: an ADV/PREP+ADV tag, or a PDEN
+    denotative word (só, também, ainda, ...).
+    """
+    return (pos_tagger.tagset.is_adverb(token)
+            or pos_tagger.tagset.is_denotative_word(token))
+
+
 class AdverbsMin(base.Metric):
     """
         **Nome da Métrica**: adverbs min
@@ -4256,8 +4271,8 @@ class AdverbsMin(base.Metric):
         sents = [list(filterfalse(pos_tagger.tagset.is_punctuation,
                                   i)) for i in rp.tagged_sentences(t)]
         sents_count = [len(i) for i in sents]
-        adverbs = [filter(pos_tagger.tagset.is_adverb, i) for i in sents]
-        adverbs = [len(list(i)) for i in adverbs]
+        adverbs = [sum(1 for tok in i if _counts_as_adverb(tok))
+                   for i in sents]
 
         result = [adverbs[i] / sents_count[i] for i in range(len(adverbs))]
         return np.array(result).min()
@@ -4309,8 +4324,8 @@ class AdverbsMax(base.Metric):
         sents = [list(filterfalse(pos_tagger.tagset.is_punctuation,
                                   i)) for i in rp.tagged_sentences(t)]
         sents_count = [len(i) for i in sents]
-        adverbs = [filter(pos_tagger.tagset.is_adverb, i) for i in sents]
-        adverbs = [len(list(i)) for i in adverbs]
+        adverbs = [sum(1 for tok in i if _counts_as_adverb(tok))
+                   for i in sents]
 
         result = [adverbs[i] / sents_count[i] for i in range(len(adverbs))]
         return np.array(result).max()
@@ -4362,8 +4377,8 @@ class AdverbsStandardDeviation(base.Metric):
         sents = [list(filterfalse(pos_tagger.tagset.is_punctuation,
                                   i)) for i in rp.tagged_sentences(t)]
         sents_count = [len(i) for i in sents]
-        adverbs = [filter(pos_tagger.tagset.is_adverb, i) for i in sents]
-        adverbs = [len(list(i)) for i in adverbs]
+        adverbs = [sum(1 for tok in i if _counts_as_adverb(tok))
+                   for i in sents]
 
         result = [adverbs[i] / sents_count[i] for i in range(len(adverbs))]
         return np.array(result).std()
@@ -4412,8 +4427,7 @@ class AdverbDiversity(base.Metric):
 
     def value_for_text(self, t, rp=default_rp):
         adverbs = [i[0].lower() for i in rp.tagged_words(t)
-                   if pos_tagger.tagset.is_adverb(i)
-                   or pos_tagger.tagset.is_denotative_word(i)]
+                   if _counts_as_adverb(i)]
         # unique = len(set(adverbs))
         try:
             return rp.mattr(adverbs)
