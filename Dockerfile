@@ -5,10 +5,22 @@ ENV TZ=America/Sao_Paulo
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt update
-RUN apt install -y python3 python3-pip python3-numpy
-RUN apt install -y default-jre-headless
-RUN apt install -y cmake build-essential libboost-all-dev libeigen3-dev zlib1g-dev libbz2-dev liblzma-dev patch python3-venv
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 \
+    python3-pip \
+    python3-numpy \
+    default-jre-headless \
+    cmake \
+    build-essential \
+    libboost-all-dev \
+    libeigen3-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    liblzma-dev \
+    patch \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
 
 # Use a venv so pip installs don't trip PEP 668's "externally-managed" guard.
 RUN python3 -m venv --system-site-packages /opt/venv
