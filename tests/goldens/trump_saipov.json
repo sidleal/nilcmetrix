@@ -38,7 +38,7 @@
   "content_word_standard_deviation": 0.05688,
   "content_words": 0.61176,
   "content_words_ambiguity": 4.05263,
-  "coreference_pronoun_ratio": 2.0,
+  "coreference_pronoun_ratio": 4.0,
   "cross_entropy": 0.58639,
   "cw_freq": 153889.44231,
   "cw_freq_bra": 4.36865,
