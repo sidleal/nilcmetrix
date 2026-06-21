@@ -7,7 +7,7 @@ ENV LC_ALL=C.UTF-8
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt update
 RUN apt install -y python3 python3-pip python3-numpy
-RUN apt install -y default-jre
+RUN apt install -y default-jre-headless
 RUN apt install -y cmake build-essential libboost-all-dev libeigen3-dev zlib1g-dev libbz2-dev liblzma-dev patch python3-venv
 
 # Use a venv so pip installs don't trip PEP 668's "externally-managed" guard.
@@ -32,7 +32,9 @@ RUN patch -d tools/nlpnet-py3 -p1 < patches/nlpnet-py3.patch
 
 RUN pip3 install --no-build-isolation ./tools/nlpnet-py3
 
-RUN python3 -m nltk.downloader all
+# punkt + punkt_tab: sentence/word tokenization (required by production).
+# stopwords: only used by the dev preprocessing scripts in text_metrics/scripts/.
+RUN python3 -m nltk.downloader punkt punkt_tab stopwords
 
 # TODO: replace deprecated `setup.py install` with `pip3 install --no-build-isolation ./tools/idd3`
 RUN cd tools/idd3 && python3 setup.py install
