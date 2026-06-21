@@ -124,7 +124,7 @@
   "pronouns_min": 0.04762,
   "pronouns_standard_deviation": 0.04246,
   "punctuation_diversity": 0.18182,
-  "punctuation_ratio": 0.12295,
+  "punctuation_ratio": 0.09016,
   "ratio_function_to_content_words": 0.64179,
   "second_person_pronouns": 0.0,
   "sentence_length_max": 34,
