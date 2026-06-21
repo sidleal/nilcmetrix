@@ -5166,9 +5166,9 @@ class GunningFog(base.Metric):
 
         **Contagens**: 19 palavras com 3 ou mais sílabas em 38 palavras e 2 sentenças
 
-        **Resultado Esperado**: (38/2 + 19/38) x 0,4 => 19,5 x 0,4 = 7,8
+        **Resultado Esperado**: (38/2 + 100 × 19/38) x 0,4 => 69 x 0,4 = 27,6
 
-        **Resultado Obtido**: 7,8
+        **Resultado Obtido**: 27,6
 
         **Status**: correto
     """
@@ -5182,7 +5182,7 @@ class GunningFog(base.Metric):
         syllables = list(map(syllable_separator.separate, rp.all_words(t)))
         complex_words = [i for i in syllables if len(i) >= 3]
         average_words = len(words) / ilen(sentences)
-        percentage_complex = len(complex_words) / len(words)
+        percentage_complex = 100 * len(complex_words) / len(words)
         return 0.4 * (average_words + percentage_complex)
 
 
