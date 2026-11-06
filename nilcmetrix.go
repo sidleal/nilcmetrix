@@ -271,6 +271,8 @@ func initialize() {
 
 }
 
+const api_key = "yyy"
+
 func finalize() {
 }
 
@@ -286,6 +288,8 @@ func Router() *mux.Router {
 	r.HandleFunc("/api/v1/metrix/{subset}/{key}", metricsHandler).Methods("POST")
 	r.HandleFunc("/api/v1/palavras/{retType}/{key}", palavrasHandler)
 	r.HandleFunc("/ws/metrix", wsMetrixHandler)
+	r.HandleFunc("/ws/ranking", wsRankingHandler)
+	r.HandleFunc("/ws/simpligo-ranking", wsRankingHandler)
 
 	return r
 }
@@ -612,7 +616,7 @@ func metricsHandler(w http.ResponseWriter, r *http.Request) {
 
 	key := vars["key"]
 
-	if key != "yyy" {
+	if key != api_key {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
@@ -761,7 +765,7 @@ func palavrasHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	key := vars["key"]
-	if key != "yyy" {
+	if key != api_key {
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}
